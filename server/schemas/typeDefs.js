@@ -25,15 +25,15 @@ const typeDefs = gql`
     }
 
     type Query {
-        me: [User]
-        book: [Book]
-        user(_id:String): [User]
+        me: User
+        users: [User]
+        user(_id: String, username: String): User
     }
 
-    input saveBookInput {
-            authors: [String]
+    input: saveBookInput {
+            authors: [String]!
             description: String!
-            title: String
+            title: String!
             bookId: String!
             image: String
             link: String
