@@ -15,7 +15,7 @@ const resolvers = {
         },
         me: async (parent, args, context) => {
             if (context.user) {
-            return User.findOne({_id: context.user._id}).populate('savedBooks');
+            return User.findOne({_id: context.user._id})
         }
         throw new AuthenticationError('You need to be logged in, Try Again'); 
         },
@@ -49,9 +49,9 @@ const resolvers = {
         },
         saveBook: async (parent, args, context) => {
             if (context.user) {
-                const updatedUser = await User.findOneAndUpdate(
+                const updatedUser = await User.findByIdAndUpdate(
                 { _id: context.user._id },
-                { $addToSet: { savedBooks: args } },
+                { $addToSet: { savedBooks: args.input } },
                 { new: true, runValidators: true }
                 );
 

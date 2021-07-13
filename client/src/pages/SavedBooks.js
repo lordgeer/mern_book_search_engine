@@ -9,16 +9,15 @@ import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
 
 const SavedBooks = () => {
-  const { loading, data, refetch } = useQuery(GET_ME);
+  const { loading, error, data, refetch } = useQuery(GET_ME);
 
   useEffect(() => {
     refetch();
-  },[refetch]);
+  }, [refetch]);
 
- 
   const userData = data?.me;
 
- 
+
   const [removeBook] = useMutation(REMOVE_BOOK);
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
@@ -30,12 +29,13 @@ const SavedBooks = () => {
     }
 
     try {
-      await removeBook({variables: { bookId }});
+      const { data } = await removeBook({
+        variables: { bookId },
+      });
 
       removeBookId(bookId);
 
       refetch();
-
     } catch (err) {
       console.error(err);
     }
